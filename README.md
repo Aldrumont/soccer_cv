@@ -1,9 +1,13 @@
 
 # Soccer CV Project
 
+
 This project applies computer vision and artificial intelligence to analyze soccer videos. Using YOLO models for player and ball detection, Norfair for movement tracking, and OpenCV for image processing, it identifies teams, determines ball possession, and tracks player movements.
 
 For this project, a segment from the 2023/2024 Champions League final broadcast available [here](https://www.youtube.com/watch?v=cD537FR7Awc) was used, and the video was downloaded in 1080p resolution.
+
+
+https://github.com/Aldrumont/soccer_cv/assets/43288380/b400ca16-9634-4b92-9cac-bed9226fb67b 
 
 ## Scripts Overview
 
@@ -23,7 +27,11 @@ For example, to isolate the uniform color of Borussia Dortmund, the selected HSV
 ```
 Video demonstration for determining the HSV range of Borussia Dortmund uniform can be found here:
 
-readme_utils/hsv_extract_video.mp4
+
+
+https://github.com/Aldrumont/soccer_cv/assets/43288380/ef2ffb82-997a-4337-bacd-bdfa7f63c1e9
+
+
 
 ### `soccer_video_analysis.py`
 
