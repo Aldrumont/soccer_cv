@@ -4,6 +4,8 @@ import norfair
 import torch
 from norfair.camera_motion import HomographyTransformationGetter, MotionEstimator
 from ultralytics import YOLO
+from pytube import YouTube
+
 
 # Tracker configurations
 tracker_person = norfair.Tracker(distance_function="euclidean", distance_threshold=100, past_detections_length=30)
@@ -35,6 +37,7 @@ class_main_hsv_color = {
 }
 
 class_hsv_range = {
+    # "Borussia": [[H_low, H_high], [S_low, S_high], [V_low, V_high]],
     "Borussia": [[31, 48], [50, 100], [70, 100]],
     "Real Madrid": [[0, 360], [0, 15], [85, 100]],
     "Borrusia_GK": [[0, 10], [70, 94], [84, 100]],
@@ -428,9 +431,56 @@ def read_frames_from_video(video_path, output_path, show_video=False, save_video
         out.release()
     cv2.destroyAllWindows()
 
+def cut_video(video_path, start_time, end_time, output_path):
+    """
+    Cut a video from start_time to end_time without any processing.
+    
+    Args:
+    video_path (str): Path to the video file.
+    start_time (int): Start time in seconds.
+    end_time (int): End time in seconds.
+    output_path (str): Path to save the cut video.
+    """
+    cap = cv2.VideoCapture(video_path)
+    if not cap.isOpened():
+        print("Error: Could not open video.")
+        return
+    
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
+    width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+    
+    start_frame = int(start_time * fps)
+    end_frame = int(end_time * fps) if end_time else int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    
+    if start_frame >= end_frame:
+        print("Error: Invalid time range.")
+        cap.release()
+        return
+    
+    cap.set(cv2.CAP_PROP_POS_FRAMES, start_frame)
+    
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
+    
+    frame_count = start_frame
+    while frame_count < end_frame:
+        ret, frame = cap.read()
+        frame_count += 1
+        if not ret:
+            break
+        out.write(frame)
+    
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
+    
+
 
 if __name__ == "__main__":
     # Example usage
-    video_path = 'final_champions.mp4'
+    video_path = 'final_champions_full_match.mp4'
     output_path = 'processed_video.mp4'
+
     read_frames_from_video(video_path, output_path, show_video=True, save_video=True, skip_frames=1, start_time=60*14, end_time=60*16)
+
