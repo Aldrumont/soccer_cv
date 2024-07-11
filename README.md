@@ -22,7 +22,8 @@ For example, to isolate the uniform color of Borussia Dortmund, the selected HSV
 "Borussia": [[35, 42], [74, 100], [40, 100]]
 ```
 Video demonstration for determining the HSV range of Borussia Dortmund uniform can be found here:
-[Video]
+
+readme_utils/hsv_extract_video.mp4
 
 ### `soccer_video_analysis.py`
 
